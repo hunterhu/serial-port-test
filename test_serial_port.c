@@ -19,6 +19,8 @@
 #define pr_debug(fmt, ...) \
             do { if (DEBUG) fprintf(stderr, fmt, ##__VA_ARGS__); } while (0)
 
+#define  portname "/dev/ttyS2"
+
 static void print_buf(void *buf, int size)
 {
     int i;
@@ -64,6 +66,11 @@ set_interface_attribs (int fd, int speed, int parity)
         tty.c_cflag &= ~CSTOPB;
         tty.c_cflag &= ~CRTSCTS;
 
+        /* Make raw, this is the same as "minicom -H" */
+        cfmakeraw(&tty);
+        /* flush before setting it */
+        tcflush(fd, TCIFLUSH);
+
         if (tcsetattr (fd, TCSANOW, &tty) != 0)
         {
                 pr_debug ("error %d from tcsetattr", errno);
@@ -92,7 +99,6 @@ set_blocking (int fd, int should_block)
 
 int main() 
 {
-    char *portname = "/dev/ttyS2";
     char buf[256];
     int n;
 
