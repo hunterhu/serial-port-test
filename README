@@ -1,0 +1,6 @@
+This is a project to facilitate serial port programming and communications in C
+programs.
+
+The code was originally imported from this stackoverflow post:
+
+http://stackoverflow.com/questions/6947413/how-to-open-read-and-write-from-serial-port-in-c
